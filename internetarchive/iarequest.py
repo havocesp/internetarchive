@@ -27,14 +27,13 @@ import copy
 import logging
 import re
 from urllib.parse import quote
-
-import requests
 import requests.models
 from jsonpatch import make_patch
 
 from internetarchive import __version__, auth
 from internetarchive.exceptions import ItemLocateError
 from internetarchive.utils import delete_items_from_dict, json, needs_quote
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -240,7 +239,7 @@ class MetadataPreparedRequest(requests.models.PreparedRequest):
         priority = priority or -5
 
         if not source_metadata:
-            r = requests.get(self.url, timeout=10)
+            r = safe_requests.get(self.url, timeout=10)
             source_metadata = r.json()
 
         # Write to many targets
