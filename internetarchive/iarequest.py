@@ -218,9 +218,10 @@ class MetadataRequest(requests.models.Request):
 
 class MetadataPreparedRequest(requests.models.PreparedRequest):
     def prepare(self, method=None, url=None, headers=None, files=None, data=None,
-                params=None, auth=None, cookies=None, hooks=None, metadata={},  # noqa: B006
+                params=None, auth=None, cookies=None, hooks=None, metadata=None,  # noqa: B006
                 source_metadata=None, target=None, priority=None, append=None,
                 append_list=None, insert=None):
+        metadata = {} if metadata is None else metadata
         self.prepare_method(method)
         self.prepare_url(url, params)
         self.identifier = self.url.split("?")[0].split("/")[-1]
