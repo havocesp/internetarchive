@@ -33,7 +33,7 @@ import re
 import sys
 from collections.abc import Mapping
 from typing import Iterable
-from xml.dom.minidom import parseString
+import defusedxml.minidom
 
 # Make preferred JSON package available via `from internetarchive.utils import json`
 try:
@@ -203,7 +203,7 @@ def get_s3_xml_text(xml_str: str) -> str:
 
     tag_names = ['Message', 'Resource']
     try:
-        p = parseString(xml_str)
+        p = defusedxml.minidom.parseString(xml_str)
         _msg = _get_tag_text('Message', p)
         _resource = _get_tag_text('Resource', p)
         # Avoid weird Resource text that contains PUT method.
