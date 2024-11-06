@@ -36,6 +36,7 @@ from urllib3 import Retry
 from internetarchive import auth, catalog, files, item, search, session
 from internetarchive import config as config_module
 from internetarchive.exceptions import AuthenticationError
+from security import safe_requests
 
 
 def get_session(
@@ -579,7 +580,7 @@ def get_user_info(access_key: str, secret_key: str) -> dict[str, str]:
     """
     u = "https://s3.us.archive.org"
     p = {"check_auth": 1}
-    r = requests.get(u, params=p, auth=auth.S3Auth(access_key, secret_key), timeout=10)
+    r = safe_requests.get(u, params=p, auth=auth.S3Auth(access_key, secret_key), timeout=10)
     r.raise_for_status()
     j = r.json()
     if j.get("error"):
